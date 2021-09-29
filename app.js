@@ -23,7 +23,6 @@ const start = async () => {
   } catch (error) {
         console.log(error);
         console.log('Could not connect to DB. Stopping Application');
-        process.exit(0);
   }
 }
 
