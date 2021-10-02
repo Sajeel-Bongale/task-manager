@@ -3,23 +3,24 @@ const app = express();
 
 const tasks = require('./routes/tasks');
 const connectDB = require('./db/connect');
+const notFound = require('./middleware/not-found');
+
 require('dotenv').config();
 
 app.use(express.json());
 
 // routes
-app.get('/hello', (req, res) => {
-    res.send('Task Manager API')
-});
-
 app.use('/api/v1/tasks', tasks);
+app.use(notFound)
 
-const port = 3500;
+const PORT = process.env.PORT || 3500;
 
 const start = async () => {
     try {
-        await connectDB(process.env.MONGO_URI);
-        app.listen(port, console.log('Server is listening on port ' + port));
+        const connectionString = process.env.MONGO_URI
+        console.log(connectionString)
+        await connectDB(connectionString);
+        app.listen(PORT, console.log('Server is listening on port ' + PORT));
   } catch (error) {
         console.log(error);
         console.log('Could not connect to DB. Stopping Application');
